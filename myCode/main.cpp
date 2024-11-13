@@ -1,57 +1,79 @@
 /**
  * @file main.cpp
- * @brief Main program for Battleship game game
- * Created on: 02-Jan-2024
+ * @brief Main program for a Modulo N Counter Demonstration
+ * Created on: 20-Nov-2023
  * Author: Sree Samanvitha Manoor Vadhoolas
  *
- * Runs different test function for
- * different parts of the task
  *
- * @return 0 upon successful completion
+ * This program demonstrates the functionality of a modulo counter. Users can
+ * input the base (2/8/10/16) and the number of digits for the counter. The program
+ * then creates a modulo N-digit counter and performs normal counting as well as
+ * pre-increment and post-increment operations using operator overloading.
+ * The counter's state is displayed after each operation, and the program continues
+ * until an invalid base or number of digits are entered.
+ *
+ * @return 0 upon successful completion.
  */
+
 // Standard (system) header files
 #include <iostream>
 #include <cstdlib>
 // Add more standard header files as required
+// #include <string>
 
 using namespace std;
 
 // Add your project's header files here
-#include "testFiles.h"
+// #include "CFraction.h"
+#include "ModuloNCounter.h"
 
 // Main program
 int main()
 {
-	cout << "battleship started." << endl << endl;
-	part1tests();
-	part2tests();
-	part3tests();
+	while (1)
+	{
+		int digits = 0;
+		int base = 0;
+		string type = " ";
 
-	Board b1(10, 10);
-	ConsoleView view(&b1);
-	//placing valid ships
-	Ship shipA(GridPosition("B2"), GridPosition("B4"));
-	Ship shipB(GridPosition("D4"), GridPosition("G4"));
-	Ship shipC(GridPosition("F6"), GridPosition("F9"));
-	b1.getOwnGrid().placeShip(shipA);
-	b1.getOwnGrid().placeShip(shipB);
-	b1.getOwnGrid().placeShip(shipC);
-	b1.getOwnGrid().takeBlow(GridPosition("B3"));
-	b1.getOwnGrid().takeBlow(GridPosition("B4"));
-	b1.getOwnGrid().takeBlow(GridPosition("B5"));
+		cout << "Please enter the parameters of your counter: " << endl;
+		cout << "number of digits: ";
+		cin >> digits;
 
-	b1.getOpponentGrid().shotResult(GridPosition("C3"), Shot::Impact::HIT);
-	b1.getOpponentGrid().shotResult(GridPosition("C4"), Shot::Impact::HIT);
-	b1.getOpponentGrid().shotResult(GridPosition("C5"), Shot::Impact::SUNKEN);
-	b1.getOpponentGrid().shotResult(GridPosition("C2"), Shot::Impact::NONE);
-	b1.getOpponentGrid().shotResult(GridPosition("F5"), Shot::Impact::NONE);
-	b1.getOpponentGrid().shotResult(GridPosition("G4"), Shot::Impact::NONE);
-	b1.getOpponentGrid().shotResult(GridPosition("G5"), Shot::Impact::HIT);
-	b1.getOpponentGrid().shotResult(GridPosition("G6"), Shot::Impact::HIT);
-	b1.getOpponentGrid().shotResult(GridPosition("I6"), Shot::Impact::NONE);
+		if (digits > 0)
+		{
+			cout << "Please enter the base (2/8/10/16): " << endl;
+			cin >> base;
 
-	view.print();
+			if (base == 2 || base == 8 || base == 10 || base == 16)
+			{
+				type = (base == 2) ? "binary" : (base == 8) ? "octal" :
+						(base == 10) ? "decimal" :
+						(base == 16) ? "hexadecimal" : "invalid";
+				cout << digits << " digit " << type << " counter" << endl;
+				ModuloNCounter counter(digits, base);
+				counter.normalCounter();
 
-	std::cout << std::endl;
+				cout << "Pre-increment using operator overloading for "
+						<< digits << " digit " << type << " counter" << endl;
+				++counter;
+
+				cout << "Post-increment using operator overloading for "
+						<< digits << " digit " << type << " counter" << endl;
+				counter++;
+			}
+			else{
+				cout << "Invalid base! Exiting!" << endl;
+				break;
+			}
+		}
+		else
+		{
+			cout << "Invalid number of digits! Exiting!" << endl;
+			break;
+		}
+	}
+
 	return 0;
 }
+
